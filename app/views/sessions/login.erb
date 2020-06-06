@@ -6,9 +6,8 @@
     <h2>Welcome, please log in or sign up!</h2>
 
     <div class="content">
-      <form action="/sessions/login" method="post">
-        <p><label for="username">Username:</label>
-        <input type="string" name="username"><br>
+      <p><%= @error%></p>
+      <form action="/sessions" method="post">
         <label for="email">Email:</label>
         <input type="string" name="email"><br>
         <label for="password">Password:</label>
@@ -16,7 +15,7 @@
         <input type="submit" value="Log In"><br>
       </form>
       <br>
-      <a href="/user/signup"><button>Sign Up</button></a><br>
+      <a href="/users/new"><button>Sign Up</button></a><br>
       <br>
       <br>
       <a href="/security">Forgot Password</a><br>

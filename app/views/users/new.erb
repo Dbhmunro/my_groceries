@@ -6,7 +6,8 @@
     <h2>Welcome, please sign up!</h2>
 
     <div class="content">
-      <form action="/" method="post">
+      <p><%= @error%></p>
+      <form action="/users" method="post">
         <p>
         <label for="username">Username:</label>
         <input type="string" name="username"><br>
@@ -18,7 +19,7 @@
         <input type="submit" value="Sign Up"><br>
       </form>
       <br>
-      <p>Already have an account?<a href="/sessions/login">Log In</a></p>
+      <p>Already have an account? <a href="/sessions/login">Log In</a></p>
 
     </div>
 

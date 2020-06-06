@@ -1,10 +1,14 @@
 require './config/environment'
 
 class ApplicationController < Sinatra::Base
-
+  
+  
   configure do
-    enable :sessions
-    set :secret_session, "secret"
+    # enable :sessions
+    # set :session_secret, "secret"
+    use Rack::Session::Cookie,  :key => 'rack.session',
+                                :path => '/',
+                                :secret => 'your_secret'
     set :public_folder, 'public'
     set :views, 'app/views'
   end
@@ -18,12 +22,12 @@ class ApplicationController < Sinatra::Base
 
   helpers do
 
-    def login
-
+    def set_by_id
+      User.find_by(id: params[:id])
     end
-    
-    def logged_in?
 
+    def logged_in?
+      !!session[:user_id]
     end
 
   end
