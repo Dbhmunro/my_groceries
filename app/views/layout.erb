@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<%# add homepage link, logout link and user profile link if a logged_in? %>
+
 <!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
 <!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
 <!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
@@ -14,6 +16,13 @@
     <link rel="stylesheet" href="/stylesheets/main.css" />
   </head>
   <body>
+    <div id="banner">
+      <% if !!session[:user_id] %>
+        <a href=<%= "/lists/#{session[:user_id]}/index" %>><button>Homepage</button></a>
+        <a href=<%= "/users/#{session[:user_id]}" %>><button>Profile</button></a>
+        <a href="/sessions/logout"><button>Logout</button></a>
+      <% end %>
+    </div>
     <div class="wrapper">
 
         <%= yield %>

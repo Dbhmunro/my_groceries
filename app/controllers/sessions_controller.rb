@@ -5,12 +5,16 @@ class SessionsController < ApplicationController
             redirect to "lists/#{session[:user_id]}/index"
         else
             # binding.pry
-
             erb :"sessions/login"
         end
     end
 
-    post "/sessions" do
+    get "/sessions/logout" do
+        session.clear
+        redirect to "sessions/login"
+    end
+
+    post "/sessions/login" do
         user = User.find_by(email: params[:email].downcase)
         if user && user.authenticate(params[:password])
             session[:user_id] = user.id.to_s
@@ -20,11 +24,6 @@ class SessionsController < ApplicationController
             @error = "Incorrect email or password."
             erb :"sessions/login"
         end
-    end
-
-    get "/sessions/logout" do
-        session.clear
-        redirect to "sessions/login"
     end
 
 end

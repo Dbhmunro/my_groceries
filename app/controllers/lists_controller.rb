@@ -2,8 +2,9 @@ class ListsController < ApplicationController
 
     get "/lists/:id/index" do
         # session[:user_id]
-        binding.pry
+        # binding.pry
         if logged_in? && (params[:id] == session[:user_id])
+            @user = set_by_id
             erb :"lists/index"
         else
             redirect to "sessions/login"

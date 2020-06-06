@@ -1,4 +1,12 @@
 <%# viewable only to the user self %>
-<p>Details of a user</p>
-<%= @user.username %><br>
-<%= @user.email %>
+<h2>Details of a user</h2>
+<p>Name: <%= @user.username %></p><br>
+<p>Email: <%= @user.email %></p><br>
+<br>
+<a href=<%= "/users/#{session[:user_id]}/edit" %>><button>Edit Details</button></a><br>
+<br>
+<a href=<%= "/users/#{session[:user_id]}/edit_password" %>><button>Change Password</button></a><br>
+<br>
+<br>
+<a href=<%= "/users/#{session[:user_id]}/delete" %>><button>Delete Account</button></a><br>
+

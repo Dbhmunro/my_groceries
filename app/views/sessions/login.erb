@@ -7,7 +7,7 @@
 
     <div class="content">
       <p><%= @error%></p>
-      <form action="/sessions" method="post">
+      <form action="/sessions/login" method="post">
         <label for="email">Email:</label>
         <input type="string" name="email"><br>
         <label for="password">Password:</label>
@@ -18,7 +18,7 @@
       <a href="/users/new"><button>Sign Up</button></a><br>
       <br>
       <br>
-      <a href="/security">Forgot Password</a><br>
+      <%# <a href="/security">Forgot Password</a><br> %>
     </div>
 
 

@@ -14,10 +14,12 @@ class ApplicationController < Sinatra::Base
   end
 
   get "/" do
-    erb :welcome
-
-    #route to login
-    #or route to lists/index
+    # erb :welcome
+    if logged_in?
+      redirect to "index/#{session[user_id]}/index"
+    else
+      redirect to "sessions/login"
+    end
   end
 
   helpers do
