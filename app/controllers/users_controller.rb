@@ -35,35 +35,23 @@ class UsersController < ApplicationController
         end
     end
     
-    get "/users/:id/delete" do
-        #user.destroy or user.delete?
-        user = set_by_id
-        if logged_in? && (params[:id] == session[:user_id])
-            user.destroy #need to ensure deletion of all related db items
-            session.clear
-            redirect to "sessions/login"
-        else
-            redirect to "users/#{session[:user_id]}"
-        end
-    end
-    
     post "/users/new" do
-            #create a new user
-            # binding.pry
-            if params.has_value?("")
-                @error = "Please fill in all fields."
+        #create a new user
+        # binding.pry
+        if params.has_value?("")
+            @error = "Please fill in all fields."
+            erb :"users/new"
+        else
+            if User.find_by(email: params[:email].downcase)
+                @error = "Email address already in use."
                 erb :"users/new"
             else
-                if User.find_by(email: params[:email].downcase)
-                    @error = "Email address already in use."
-                    erb :"users/new"
-                else
-                    user = User.new(username: params[:username], email: params[:email].downcase, password: params[:password])
-                    user.save
-                    redirect to "sessions/login"
-                end
+                user = User.new(username: params[:username], email: params[:email].downcase, password: params[:password])
+                user.save
+                redirect to "sessions/login"
             end
         end
+    end
     
     put "/users/:id/edit" do
         @user = set_by_id
@@ -86,7 +74,7 @@ class UsersController < ApplicationController
             end
         end
     end
-
+    
     patch "/users/:id/edit_password" do
         @user = set_by_id
         if params.has_value?("")
@@ -101,9 +89,17 @@ class UsersController < ApplicationController
             @message = "Incorrect password."
             erb :"users/edit_password"
         elsif params[:password_new_1] != params[:password_new_2]
-            @message = "New password does not match with confirmation."
+            @message2 = "Does not match New Password."
             erb :"users/edit_password"
         end
     end
-
+    
+    delete "/users/:id/delete" do
+        #user.destroy or user.delete?
+        user = set_by_id
+        user.destroy #need to ensure deletion of all related db items
+        session.clear
+        redirect to "sessions/login"
+    end
+    
 end

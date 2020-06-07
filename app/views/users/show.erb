@@ -1,5 +1,5 @@
 <%# viewable only to the user self %>
-<h2>Details of a user</h2>
+<h2>Your Account Details</h2>
 <p>Name: <%= @user.username %></p><br>
 <p>Email: <%= @user.email %></p><br>
 <br>
@@ -8,5 +8,7 @@
 <a href=<%= "/users/#{session[:user_id]}/edit_password" %>><button>Change Password</button></a><br>
 <br>
 <br>
-<a href=<%= "/users/#{session[:user_id]}/delete" %>><button>Delete Account</button></a><br>
+<form action=<%= "/users/#{session[:user_id]}/delete" %> method="POST">
+<input type="hidden" name="_method" value="DELETE">
+    <input type="submit" value="Delete Account">
 

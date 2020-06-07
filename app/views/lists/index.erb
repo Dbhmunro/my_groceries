@@ -1,3 +1,30 @@
-<%= session[:user_id] %>
-<p>All shopping lists associated to user</p>
-<p>can select one to view all groceries in it</p>
+
+
+<div class="container">
+  <header></header>
+  <div class="col-md-8 col-md-offset-2">
+    <h2>Welcome, <%= @user.username %>!</h2>
+    <p>Select a list to view all groceries in it</p>
+
+    <div class="content">
+      <h3>Your Shopping Lists</h3>
+      <ul>
+        <% @user.shopping_lists.each do |list| %>
+            <li><a href=<%= "/lists/#{session[:user_id]}/#{list.id}" %>><%= list.name %>   </a><a href=<%= "/lists/#{session[:user_id]}/#{list.id}/edit" %>><button>Edit List</button></a><a href=<%= "/lists/#{session[:user_id]}/#{list.id}/delete" %>><button>Delete List</button></a></li>
+        <% end %>
+      <form action=<%= "/lists/#{@user.id}/index" %> method="post">
+        <li><input type="string" name="new_list">
+        <input type="submit" value="New List"><%= @error%></li>
+      </form>
+      </ul>
+      <br>
+      <br>
+      <a href=<%= "/lists/#{session[:user_id]}/lists_with_items" %>><button>View All Shopping Lists with Items</button></a><br>
+      <br>
+      <br>
+    </div>
+
+
+  </div>
+</div>
+
