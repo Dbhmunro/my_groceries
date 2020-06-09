@@ -1,28 +1,31 @@
 class UsersController < ApplicationController
 
+    #new
     get "/users/new" do
         if logged_in? && (params[:id] == session[:user_id])
-            redirect to "lists/#{session[:user_id]}/index"
+            redirect to "users/#{session[:user_id]}/lists/index"
         else
             erb :"users/new"
         end 
     end
     
+    #show
     get "/users/:id" do
         @user = set_by_id
         if logged_in? && (params[:id] == session[:user_id])
             erb :"users/show"
         else
-            redirect to "lists/#{session[:user_id]}/index"
+            redirect to "/sessions/login"
         end
     end
     
+    #edit
     get "/users/:id/edit" do
         @user = set_by_id
         if logged_in? && (params[:id] == session[:user_id])
             erb :"users/edit"
         else
-            redirect to "lists/#{session[:user_id]}/index"
+            redirect to "/sessions/login"
         end
     end
     
@@ -31,10 +34,11 @@ class UsersController < ApplicationController
         if logged_in? && (params[:id] == session[:user_id])
             erb :"users/edit_password"
         else
-            redirect to "users/#{session[:user_id]}"
+            redirect to "/sessions/login"
         end
     end
     
+    #create
     post "/users/new" do
         #create a new user
         # binding.pry
@@ -53,6 +57,7 @@ class UsersController < ApplicationController
         end
     end
     
+    #update
     put "/users/:id/edit" do
         @user = set_by_id
         if params.has_value?("")
@@ -94,7 +99,8 @@ class UsersController < ApplicationController
         end
     end
     
-    delete "/users/:id/delete" do
+    #destroy
+    delete "/users/:id" do
         #user.destroy or user.delete?
         user = set_by_id
         user.destroy #need to ensure deletion of all related db items

@@ -3,26 +3,34 @@
   <header></header>
   <div class="col-md-8 col-md-offset-2">
     <h2><%= @user.username %></h2>
+    <br>
+    <a href=<%= "/users/#{session[:user_id]}/lists/all_with_items" %>><button>View All Shopping Lists with Items</button></a><br>
+    <br>
 
     <div class="content">
-      <h3><%= @list.name %> Shopping List <a href=<%= "/lists/#{session[:user_id]}/index" %>><button>All Shopping Lists</button></a></h3>
+      <h3><%= @list.name %> Shopping List</h3>
       <br>
       <ul>
         <% @list.groceries.each do |item| %>
-            <li><%= item.name %>  (<%= item.quantity %>) <a href=<%= "/lists/#{session[:user_id]}/#{@list.id}/#{item.id}/edit" %>><button>Edit Item</button></a><a href=<%= "/lists/#{session[:user_id]}/#{@list.id}/#{item.id}/delete" %>><button>Delete Item</button></a></li>
+            <li><%= item.name %>  (<%= item.quantity %>) 
+            <a href=<%= "/users/#{session[:user_id]}/lists/#{@list.id}/groceries/#{item.id}/edit" %>><button>Edit</button></a>
+            <form action=<%= "/users/#{session[:user_id]}/lists/#{@list.id}/groceries/#{item.id}" %> method="POST">
+              <input type="hidden" name="_method" value="DELETE">
+              <input type="button" onClick="confirmSubmit(this.form);" value="Delete">
+            </form></li><br>
         <% end %>
-      <form action=<%= "/lists/#{@user.id}/#{@list.id}" %> method="post">
+      <form action=<%= "/users/#{@user.id}/lists/#{@list.id}" %> method="post">
         <li><input type="string" name="new_item_name">
         <label for="new_item_quantity">Quantity:</label>
         <input type="number" name="new_item_quantity" min="1" value="1" size=5>
-        <%# <select name="item_category">
-        </select> %>
-        <input type="submit" value="New Item"><%= @error%></li>
+        <input type="submit" value="Add"><%= @error%></li>
       </form>
       </ul>
       <br>
       <br>
       <br>
+      <br>
+      <a href=<%= "/users/#{session[:user_id]}/lists/index" %>><button>Return to Shopping Lists</button></a>
       <br>
     </div>
 

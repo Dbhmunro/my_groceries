@@ -1,2 +1,39 @@
-"Edit the name or quantity of a list item"
-"Edit the name or quantity of a list item"
+<div class="container">
+  <header></header>
+  <div class="col-md-8 col-md-offset-2">
+    <h2>Edit Your Item</h2>
+
+    <div class="content">
+      <p><%= @list.name %>: <%= @item.name %> (<%= @item.quantity %>)</p>
+      <form action=<%= "/users/#{@user.id}/lists/#{@list.id}/groceries/#{@item.id}/edit" %> method="POST">
+      <input type="hidden" name="_method" value="PUT">
+        <p>
+        <label for="edit_item_name">Name:</label>
+        <input type="string" name="edit_item_name" value="<%= @item.name %>"><br>
+        <br>
+        <label for="edit_item_quantity">Quantity:</label>
+        <input type="number" name="edit_item_quantity" min="1" value="<%= @item.quantity %>" size=5><br>
+        <br>
+        <label for="associated_list">Change List:</label>
+        <select name="associated_list">
+          <% @user.shopping_lists.each do |l| %>
+            <% if l.id == @list.id %>
+              <option value="<%=l.id%>" selected><%=l.name%></option>
+            <% else %>
+              <option value="<%=l.id%>"><%=l.name%></option>
+            <% end %>
+          <% end %>
+        </select>
+        <br>
+        <br>
+        <input type="submit" value="Save"><%= @error%>
+      </form>
+      <br>
+      <br>
+      <p><a href=<%= "/users/#{session[:user_id]}/lists/#{@list.id}" %>><button><- Back</button></a></p>
+
+    </div>
+
+
+  </div>
+</div>

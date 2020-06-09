@@ -3,25 +3,27 @@
 <div class="container">
   <header></header>
   <div class="col-md-8 col-md-offset-2">
-    <h2>Edit your profile</h2>
+    <h2>Edit Your Profile</h2>
 
     <div class="content">
       <p><%= @error %></p>
       <form action=<%= "/users/#{session[:user_id]}/edit" %> method="POST">
+            
       <input type="hidden" name="_method" value="PUT">
         <p>
         <label for="username">Name:</label>
-        <input type="string" name="username" value=<%= @user.username%>><br>
+        <input type="string" name="username" value="<%= @user.username %>"><br>
+        <br>
         <label for="email">Email:</label>
-        <input type="string" name="email" value=<%=@user.email%>></p><br>
+        <input type="string" name="email" value="<%= @user.email %>"></p><br>
 
-        <label for="password">Password required:</label>
+        <label for="password">Password Required:</label>
         <input type="password" name="password">
-        <input type="submit" value="Submit changes"><br>
+        <input type="submit" value="Submit Changes"><br>
       </form>
       <br>
       <br>
-      <p><a href=<%= "/users/#{session[:user_id]}" %>><button>Return to Profile</button></a></p>
+      <p><a href=<%= "/users/#{session[:user_id]}" %>><button><- Back</button></a></p>
 
     </div>
 

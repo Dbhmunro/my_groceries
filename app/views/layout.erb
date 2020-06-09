@@ -15,10 +15,20 @@
 
     <link rel="stylesheet" href="/stylesheets/main.css" />
   </head>
+
+  <script type="text/javascript">
+
+  function confirmSubmit(form) {
+  if (confirm("Are you sure you want to delete?")) {
+  form.submit();
+  }
+  }
+  </script>
+
   <body>
     <div id="banner">
       <% if !!session[:user_id] %>
-        <a href=<%= "/lists/#{session[:user_id]}/index" %>><button>Homepage</button></a>
+        <a href=<%= "/users/#{session[:user_id]}/lists/index" %>><button>Homepage</button></a>
         <a href=<%= "/users/#{session[:user_id]}" %>><button>Profile</button></a>
         <a href="/sessions/logout"><button>Logout</button></a>
       <% end %>
@@ -38,4 +48,5 @@
       <script>window.attachEvent("onload",function(){CFInstall.check({mode:"overlay"})})</script>
     <![endif]--> %>
   </body>
+
 </html>

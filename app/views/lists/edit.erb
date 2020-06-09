@@ -1,2 +1,23 @@
-"Edit a shopping list for a user"
-"submitting update will return user to index"
+<div class="container">
+  <header></header>
+  <div class="col-md-8 col-md-offset-2">
+    <h2>Edit your shopping list</h2>
+
+    <div class="content">
+      <p><%= @list.name %></p>
+      <form action=<%= "/users/#{@user.id}/lists/#{@list.id}/edit" %> method="POST">
+      <input type="hidden" name="_method" value="PUT">
+        <p>
+        <label for="edit_list">Name:</label>
+        <input type="string" name="edit_list" value="<%= @list.name %>"><br>
+        <input type="submit" value="Save"><%= @error%>
+      </form>
+      <br>
+      <br>
+      <p><a href=<%= "/users/#{session[:user_id]}/lists/index" %>><button><- Back</button></a></p>
+
+    </div>
+
+
+  </div>
+</div>

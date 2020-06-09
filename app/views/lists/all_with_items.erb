@@ -1,0 +1,18 @@
+<a href=<%= "/users/#{session[:user_id]}/lists/index" %>><button>Return to Shopping Lists</button></a>
+<br>
+<br>
+<h2>Shopping Lists for <%= @user.username %></h2>
+<p>Sorted by number of items on lists.</p>
+
+
+<% @user.shopping_lists.sort_by { |list| list.groceries.length }.reverse!.each do |list| %>
+<%# <% @user.shopping_lists.each do |list| %>
+    <% if list.groceries.length > 0 %>
+        <h3><a href=<%= "/users/#{@user.id}/lists/#{list.id}" %>><%= list.name %></a></h3>
+            <ul>
+            <% list.groceries.each do |item| %>
+                <li><%= item.name %> (<%= item.quantity %>)</li>
+            <% end %>
+            </ul>
+    <% end %>
+<% end %>
