@@ -16,7 +16,7 @@ class ApplicationController < Sinatra::Base
   get "/" do
     # erb :welcome
     if logged_in?
-      redirect to "users/#{session[user_id]}/lists/index"
+      redirect to "users/#{session[:user_id]}/lists/index"
     else
       redirect to "sessions/login"
     end
