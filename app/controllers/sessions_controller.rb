@@ -2,11 +2,9 @@ class SessionsController < ApplicationController
 
     get "/sessions/login" do
         if logged_in?
-            redirect to "users/#{session[:user_id]}/lists/index"
-        else
-            # binding.pry
-            erb :"sessions/login"
+            redirect to "lists/index"
         end
+        erb :"sessions/login"
     end
 
     get "/sessions/logout" do
@@ -19,7 +17,7 @@ class SessionsController < ApplicationController
         if user && user.authenticate(params[:password])
             session[:user_id] = user.id.to_s
             # binding.pry
-            redirect to "users/#{session[:user_id]}/lists/index"
+            redirect to "lists/index"
         else
             @error = "Incorrect email or password."
             erb :"sessions/login"

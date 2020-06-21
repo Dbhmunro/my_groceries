@@ -7,7 +7,7 @@
 
     <div class="content">
       <p><%= @error %></p>
-      <form action=<%= "/users/#{session[:user_id]}/edit" %> method="POST">
+      <form action=<%= "/edit" %> method="POST">
             
       <input type="hidden" name="_method" value="PUT">
         <p>
@@ -23,7 +23,7 @@
       </form>
       <br>
       <br>
-      <p><a href=<%= "/users/#{session[:user_id]}" %>><button><- Back</button></a></p>
+      <p><a href=<%= "/" %>><button><- Back</button></a></p>
 
     </div>
 

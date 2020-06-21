@@ -28,8 +28,8 @@
   <body>
     <div id="banner">
       <% if !!session[:user_id] %>
-        <a href=<%= "/users/#{session[:user_id]}/lists/index" %>><button>Homepage</button></a>
-        <a href=<%= "/users/#{session[:user_id]}" %>><button>Profile</button></a>
+        <a href=<%= "/lists/index" %>><button>Homepage</button></a>
+        <a href=<%= "/" %>><button>Profile</button></a>
         <a href="/sessions/logout"><button>Logout</button></a>
       <% end %>
     </div>

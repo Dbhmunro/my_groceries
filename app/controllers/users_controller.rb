@@ -1,47 +1,41 @@
 class UsersController < ApplicationController
+    before "*" do
+        pass if request.path_info == "/new"
+        current_user
+    end
+
+    set(:auth) do |user|
+        condition do
+            unless logged_in?
+                redirect "sessions/login", 303
+            end
+        end
+    end
 
     #new
-    get "/users/new" do
-        if logged_in? && (params[:id] == session[:user_id])
-            redirect to "users/#{session[:user_id]}/lists/index"
-        else
-            erb :"users/new"
-        end 
+    get "/new" do
+        if logged_in?
+            redirect to "lists/index"
+        end
+        erb :"users/new"
     end
     
     #show
-    get "/users/:id" do
-        @user = set_by_id
-        if logged_in? && (params[:id] == session[:user_id])
-            erb :"users/show"
-        else
-            redirect to "/sessions/login"
-        end
+    get "/", :auth => :user do
+        erb :"users/show"
     end
     
     #edit
-    get "/users/:id/edit" do
-        @user = set_by_id
-        if logged_in? && (params[:id] == session[:user_id])
-            erb :"users/edit"
-        else
-            redirect to "/sessions/login"
-        end
+    get "/edit", :auth => :user do
+        erb :"users/edit"
     end
     
-    get "/users/:id/edit_password" do
-        @user = set_by_id
-        if logged_in? && (params[:id] == session[:user_id])
-            erb :"users/edit_password"
-        else
-            redirect to "/sessions/login"
-        end
+    get "/edit_password", :auth => :user do
+        erb :"users/edit_password"
     end
     
     #create
-    post "/users/new" do
-        #create a new user
-        # binding.pry
+    post "/new" do
         if params.has_value?("")
             @error = "Please fill in all fields."
             erb :"users/new"
@@ -58,20 +52,18 @@ class UsersController < ApplicationController
     end
     
     #update
-    put "/users/:id/edit" do
-        @user = set_by_id
+    put "/edit" do
         if params.has_value?("")
             @error = "Please fill in all fields."
             erb :"users/edit"
         else
-            # binding.pry
             if (User.find_by(email: params[:email].downcase).email != @user.email) && (User.find_by(email: params[:email].downcase))
                 @error = "Email address already in use."
                 erb :"users/edit"
             else
                 if @user.authenticate(params[:password])
                     @user.update(username: params[:username], email: params[:email].downcase)
-                    redirect to "users/#{session[:user_id]}"
+                    redirect to "/"
                 else
                     @error = "Incorrect password"
                     erb :"users/edit"
@@ -80,8 +72,7 @@ class UsersController < ApplicationController
         end
     end
     
-    patch "/users/:id/edit_password" do
-        @user = set_by_id
+    patch "/edit_password" do
         if params.has_value?("")
             @message = "Please fill in all fields."
             erb :"users/edit_password"
@@ -100,10 +91,8 @@ class UsersController < ApplicationController
     end
     
     #destroy
-    delete "/users/:id" do
-        #user.destroy or user.delete?
-        user = set_by_id
-        user.destroy #need to ensure deletion of all related db items
+    delete "/" do
+        @user.destroy
         session.clear
         redirect to "sessions/login"
     end

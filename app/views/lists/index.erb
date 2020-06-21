@@ -4,7 +4,7 @@
   <header></header>
   <div class="col-md-8 col-md-offset-2">
     <h2>Welcome, <%= @user.username %>!</h2>
-    <a href=<%= "/users/#{session[:user_id]}/lists/all_with_items" %>><button>View All Shopping Lists with Items</button></a><br>
+    <a href=<%= "/lists/all_with_items" %>><button>View All Shopping Lists with Items</button></a><br>
     <br>
     <br>
 
@@ -13,14 +13,14 @@
       <p>Click a list to view grocery items</p>
       <ul>
         <% @user.shopping_lists.each do |list| %>
-            <li><a href=<%= "/users/#{session[:user_id]}/lists/#{list.id}" %>><%= list.name %>   </a>
-            <a href=<%= "/users/#{session[:user_id]}/lists/#{list.id}/edit" %>><button>Edit</button></a>
-            <form action=<%= "/users/#{session[:user_id]}/lists/#{list.id}" %> method="POST">
+            <li><a href=<%= "/lists/#{list.id}" %>><%= list.name %>   </a>
+            <a href=<%= "/lists/#{list.id}/edit" %>><button>Edit</button></a>
+            <form action=<%= "/lists/#{list.id}" %> method="POST">
               <input type="hidden" name="_method" value="DELETE">
               <input type="button" onClick="confirmSubmit(this.form);" value="Delete">
             </form></li><br>
         <% end %>
-      <form action=<%= "/users/#{session[:user_id]}/lists/index" %> method="post">
+      <form action=<%= "/lists/index" %> method="post">
         <li><input type="string" name="new_list">
         <input type="submit" value="Add"><%= @error%></li>
       </form>
