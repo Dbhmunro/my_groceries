@@ -4,13 +4,20 @@
     <h2>Edit your shopping list</h2>
 
     <div class="content">
-      <p><%= @list.name %></p>
+      <p><%= @old_list_name == nil ? @list.name : @old_list_name %></p>
       <form action=<%= "/lists/#{@list.id}/edit" %> method="POST">
       <input type="hidden" name="_method" value="PUT">
         <p>
         <label for="edit_list">Name:</label>
         <input type="string" name="edit_list" value="<%= @list.name %>"><br>
-        <input type="submit" value="Save"><%= @error%>
+        <input type="submit" value="Save">
+          <% if @list.errors.any? %>
+            <p>
+            <% @list.errors.full_messages.each do |msg| %>
+              <%= msg %>. 
+            <% end %>
+            </p>
+          <% end %>
       </form>
       <br>
       <br>

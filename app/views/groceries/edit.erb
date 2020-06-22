@@ -4,7 +4,7 @@
     <h2>Edit Your Item</h2>
 
     <div class="content">
-      <p><%= @list.name %>: <%= @item.name %> (<%= @item.quantity %>)</p>
+      <p><%= @list.name %>: <%= @old_item == nil ? @item.name : @old_item[:name] %> (<%= @old_item == nil ? @item.quantity : @old_item[:quantity] %>)</p>
       <form action=<%= "/lists/#{@list.id}/groceries/#{@item.id}/edit" %> method="POST">
       <input type="hidden" name="_method" value="PUT">
         <p>
@@ -26,7 +26,14 @@
         </select>
         <br>
         <br>
-        <input type="submit" value="Save"><%= @error%>
+        <input type="submit" value="Save">
+          <% if @item.errors.any? %>
+            <p>
+            <% @item.errors.full_messages.each do |msg| %>
+              <%= msg %>. 
+            <% end %>
+            </p>
+          <% end %>
       </form>
       <br>
       <br>

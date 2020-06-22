@@ -22,7 +22,15 @@
         <% end %>
       <form action=<%= "/lists/index" %> method="post">
         <li><input type="string" name="new_list">
-        <input type="submit" value="Add"><%= @error%></li>
+        <input type="submit" value="Add">
+          <% if @list.errors.any? %>
+            <p>
+            <% @list.errors.full_messages.each do |msg| %>
+              <%= msg %>. 
+            <% end %>
+            </p>
+          <% end %>
+        </li>
       </form>
       </ul>
       <br>

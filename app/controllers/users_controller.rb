@@ -17,6 +17,7 @@ class UsersController < ApplicationController
         if logged_in?
             redirect to "lists/index"
         end
+        @user = User.new
         erb :"users/new"
     end
     
@@ -36,56 +37,42 @@ class UsersController < ApplicationController
     
     #create
     post "/new" do
-        if params.has_value?("")
-            @error = "Please fill in all fields."
-            erb :"users/new"
+        @user = User.new(username: params[:username], email: params[:email].downcase, password: params[:password])
+        if @user.valid?
+            @user.save
+            redirect to "sessions/login"
         else
-            if User.find_by(email: params[:email].downcase)
-                @error = "Email address already in use."
-                erb :"users/new"
-            else
-                user = User.new(username: params[:username], email: params[:email].downcase, password: params[:password])
-                user.save
-                redirect to "sessions/login"
-            end
+            erb :"users/new"
         end
     end
     
     #update
     put "/edit" do
-        if params.has_value?("")
-            @error = "Please fill in all fields."
-            erb :"users/edit"
+        @user.attributes = {:username => params[:username], :email => params[:email].downcase}
+        if @user.valid? && @user.authenticate(params[:password])
+            @user.save
+            redirect to "/"
         else
-            if (User.find_by(email: params[:email].downcase).email != @user.email) && (User.find_by(email: params[:email].downcase))
-                @error = "Email address already in use."
-                erb :"users/edit"
-            else
-                if @user.authenticate(params[:password])
-                    @user.update(username: params[:username], email: params[:email].downcase)
-                    redirect to "/"
-                else
-                    @error = "Incorrect password"
-                    erb :"users/edit"
-                end
+            if !@user.authenticate(params[:password])
+                @user.errors.add(:password, "is incorrect")
             end
+            erb :"users/edit"
         end
     end
     
     patch "/edit_password" do
-        if params.has_value?("")
-            @message = "Please fill in all fields."
-            erb :"users/edit_password"
-        elsif @user.authenticate(params[:password]) && (params[:password_new_1] == params[:password_new_2])
-            @user.password = params[:password_new_1]
-            @user.save
-            @message = "Password updated."
-            erb :"users/edit_password"
-        elsif !(@user.authenticate(params[:password]))
-            @message = "Incorrect password."
-            erb :"users/edit_password"
-        elsif params[:password_new_1] != params[:password_new_2]
-            @message2 = "Does not match New Password."
+        if @user.authenticate(params[:current_password])
+            @user.update(:password => params[:password], :password_confirmation => params[:password_confirmation])
+            if @user.errors.any?
+                erb :"users/edit_password"
+            else
+                @message = "Password updated."
+                erb :"users/edit_password"
+            end
+        else
+            if !@user.authenticate(params[:current_password])
+                @user.errors.add(:current_password, "is incorrect")
+            end
             erb :"users/edit_password"
         end
     end

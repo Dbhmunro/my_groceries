@@ -6,7 +6,11 @@
     <h2>Edit Your Profile</h2>
 
     <div class="content">
-      <p><%= @error %></p>
+      <% if @user.errors.any? %>
+        </div><% @user.errors.full_messages.each do |msg| %>
+          <p><%= msg %></p><br>
+        </div><% end %>
+      <% end %>
       <form action=<%= "/edit" %> method="POST">
             
       <input type="hidden" name="_method" value="PUT">

@@ -6,7 +6,11 @@
     <h2>Welcome, please sign up!</h2>
 
     <div class="content">
-      <p><%= @error %></p>
+      <% if @user.errors.any? %>
+        </div><% @user.errors.full_messages.each do |msg| %>
+          <p><%= msg %></p><br>
+        </div><% end %>
+      <% end %>
       <form action="/new" method="post">
         <p>
         <label for="username">Name:</label>

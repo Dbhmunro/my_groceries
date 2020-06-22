@@ -17,6 +17,7 @@ class ListsController < ApplicationController
 
     #index
     get "/lists/index", :auth => :user do
+        @list = ShoppingList.new
         erb :"lists/index"
     end
 
@@ -32,23 +33,22 @@ class ListsController < ApplicationController
     end
 
     post "/lists/index" do
-        if params[:new_list] == ""
-            @error = "Please enter a name for New List."
-            erb :"lists/index"
-        else
-            list = ShoppingList.new(name: params[:new_list])
-            @user.shopping_lists << list
+        @list = ShoppingList.new(name: params[:new_list])
+        if @list.valid?
+            @user.shopping_lists << @list
             @user.save
             redirect to "lists/index"
+        else
+            erb :"lists/index"
         end
     end
     
     put "/lists/:list_id/edit" do
-        if params[:edit_list] == ""
-            @error = "Please enter a name."
-            erb :"lists/index"
+        @old_list_name = @list.name
+        @list.update(name: params[:edit_list])
+        if @list.errors.any?
+            erb :"lists/edit"
         else
-            @list.update(name: params[:edit_list])
             redirect to "lists/index"
         end
     end

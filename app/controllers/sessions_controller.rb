@@ -16,7 +16,6 @@ class SessionsController < ApplicationController
         user = User.find_by(email: params[:email].downcase)
         if user && user.authenticate(params[:password])
             session[:user_id] = user.id.to_s
-            # binding.pry
             redirect to "lists/index"
         else
             @error = "Incorrect email or password."
