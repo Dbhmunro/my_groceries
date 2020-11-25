@@ -46,7 +46,7 @@ class GroceriesController < ApplicationController
 
     delete "/lists/:list_id/groceries/:item_id" do
         @item.destroy
-        redirect to "lists/#{list.id}"
+        redirect to "lists/#{@list.id}"
     end
 
 end
